@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:MariaTask.Converters">
+
+    <converters:NullToVisibilityConverter
+        x:Key="NullToVisibilityConverter" 
+        Null="Collapsed" 
+        Ref="Visible" />
+    <converters:NullToVisibilityConverter
+        x:Key="NullToVisibilityConverterInverted"
+        Null="Visible"
+        Ref="Collapsed" />
+
+    <DataTemplate x:Key="MeasureOrderActionCellTemplate">
+        <StackPanel Orientation="Vertical">
+            <Button
+                x:Name="RegistrationButton"
+                FontSize="9"
+                Content="РЕГИСТРАЦИЯ"
+                Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="100"
+                Command="{Binding Path=DataContext.RegistrateRelayCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                CommandParameter="{Binding }"
+                Visibility="{Binding Order, Converter={StaticResource NullToVisibilityConverterInverted}}" >
+            </Button>
+            <Button
+                x:Name="RemoveButton"
+                FontSize="10"
+                Content="УДАЛЕНИЕ"
+                Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="100" 
+                Command="{Binding Path=DataContext.UnRegistrateRelayCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                CommandParameter="{Binding }"
+                Visibility="{Binding Order, Converter={StaticResource NullToVisibilityConverter}}" />
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>

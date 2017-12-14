@@ -1,0 +1,69 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+                    xmlns:converters="clr-namespace:MariaTask.Converters">
+
+    <converters:NullToBooleanConverter 
+        x:Key="NullToBooleanConverter" 
+        Null="True"
+        Ref="False"/>
+    
+    <DataTemplate x:Key="MeasureOrderRowDetailTemplate">
+        <GroupBox HorizontalAlignment="Stretch" 
+                  materialDesign:ShadowAssist.ShadowDepth="Depth2" 
+                  BorderThickness="0"
+                  Style="{DynamicResource MaterialDesignGroupBox}"
+                  Header="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=DataContext.Order, Mode=OneWay}">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="200" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <materialDesign:PackIcon Grid.Row="0" Grid.Column="0" 
+                                         Kind="Account" 
+                                         Margin="0 15 0 0"
+                                         Foreground="{Binding ElementName=ClientFullNameTextBox, Path=BorderBrush}" />
+                <TextBox Grid.Row="0" Grid.Column="1" 
+				    x:Name="ClientFullNameTextBox"
+				    materialDesign:HintAssist.Hint="ФИО клиента"
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                    IsReadOnly="{Binding Order, Converter={StaticResource NullToBooleanConverter}}" >
+                    <TextBox.Text>
+                        <Binding RelativeSource="{RelativeSource AncestorType=DataGridRow}"  Path="DataContext.Order.Client.FullName" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                            <Binding.ValidationRules>
+                                <converters:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <materialDesign:PackIcon Grid.Row="0" Grid.Column="2" 
+                                         Margin="0 15 0 0"
+                                         Kind="Phone" 
+                                         Foreground="{Binding ElementName=ClientPhoneTextBox, Path=BorderBrush}" />
+                <TextBox Grid.Row="0" Grid.Column="3" 
+                         x:Name="ClientPhoneTextBox"
+                         materialDesign:HintAssist.Hint="Телефон"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=DataContext.Order.Client.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         IsReadOnly="{Binding Order, Converter={StaticResource NullToBooleanConverter}}"/>
+                <materialDesign:PackIcon Grid.Row="1" Grid.Column="0"
+                                         Margin="0 15 0 0"
+                                         Kind="Comment" 
+                                         Foreground="{Binding ElementName=CommentTextBox, Path=BorderBrush}" />
+                <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" 
+                         x:Name="CommentTextBox" 
+                         materialDesign:HintAssist.Hint="Комментарий"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=DataContext.Order.Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         IsReadOnly="{Binding Order, Converter={StaticResource NullToBooleanConverter}}"/>
+            </Grid>
+        </GroupBox>
+    </DataTemplate>
+</ResourceDictionary>
